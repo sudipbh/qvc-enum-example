@@ -48,12 +48,12 @@ public class EnumTest {
     cartService.createCart(103, cart102Json, Cart.CartStatus.DOWNTIME_IN_PROGRESS);
     String cart104Json = "{'id':104,'user':'sudip','shippingAddress':{'street':'beekman road','city':'kendall park','country':'usa','type':'residence'},'billingAddress':{'street':'5th avenue','city':'new york','country':'usa','billedParty':'gigaspaces'},'prize':{'name':'christmas surprise','amount':100},'items':[{'name':'book','count':1,'discounts':[{'name':'d1','amount':5},{'name':'d2','amount':2}]},{'name':'toy','count':4,'discounts':[{'name':'d1','amount':7},{'name':'d2','amount':4}]}]}";
     cartService.createCart(104, cart102Json, Cart.CartStatus.COMPLETED);
+    Gson gson = new Gson();
     System.out.println("List of carts with status COMPLETED:");
     SQLQuery<Cart> query = new SQLQuery<>(Cart.class, "status = ? ORDER by id").setParameter(1, Cart.CartStatus.COMPLETED);
     Cart[] results = gigaSpace.readMultiple(query);
     for (Cart cart : results) {
       Cart.CartStatus status = cart.getStatus();
-      Gson gson = new Gson();
       String cartJson = gson.toJson(cart);
       System.out.printf("cartJson = %s\n", cartJson);
       System.out.printf("Cart Status : %s\n", cart.getStatus().name());
